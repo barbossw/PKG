@@ -59,12 +59,29 @@ class ScannerThread(QThread):
         self.is_running = False
         self.is_paused = False
 
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         
-        self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableWidget.verticalHeader().setSectionResizeMode(QHeaderView.Fixed)
+        self.tableWidget.verticalHeader().setDefaultSectionSize(25)
+        
+        header = self.tableWidget.horizontalHeader()
+        
+        header.setSectionResizeMode(0, QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QHeaderView.Interactive)
+        header.setSectionResizeMode(2, QHeaderView.Interactive)
+        header.setSectionResizeMode(3, QHeaderView.Interactive)
+        header.setSectionResizeMode(4, QHeaderView.Interactive)
+        header.setSectionResizeMode(5, QHeaderView.Interactive)
+        
+        self.tableWidget.setColumnWidth(1, 90)
+        self.tableWidget.setColumnWidth(2, 100)
+        self.tableWidget.setColumnWidth(3, 110)
+        self.tableWidget.setColumnWidth(4, 130)
+        self.tableWidget.setColumnWidth(5, 110)
         
         self.scanner_thread = None
 
@@ -78,7 +95,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.start_scanning(folder_path)
 
     def start_scanning(self, folder_path):
+        self.tableWidget.setUpdatesEnabled(False)
         self.tableWidget.setRowCount(0)
+        self.tableWidget.setUpdatesEnabled(True)
+        
         self.progressBar.setValue(0)
         self.btn_select_folder.setEnabled(False)
         self.btn_pause.setEnabled(True)
@@ -105,11 +125,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def add_table_row(self, data):
         row_position = self.tableWidget.rowCount()
         self.tableWidget.insertRow(row_position)
+        
         self.tableWidget.setItem(row_position, 0, QTableWidgetItem(data["name"]))
         self.tableWidget.setItem(row_position, 1, QTableWidgetItem(data["format"]))
-        self.tableWidget.setItem(row_position, 2, QTableWidgetItem(data["size"]))
-        self.tableWidget.setItem(row_position, 3, QTableWidgetItem(data["resolution"]))
-        self.tableWidget.setItem(row_position, 4, QTableWidgetItem(data["color_depth"]))
+        self.tableWidget.setItem(row_position, 2, QTableWidgetItem(data["compression"]))
+        self.tableWidget.setItem(row_position, 3, QTableWidgetItem(data["size"]))
+        self.tableWidget.setItem(row_position, 4, QTableWidgetItem(data["resolution"]))
+        self.tableWidget.setItem(row_position, 5, QTableWidgetItem(data["color_depth"]))
 
     def scan_finished(self):
         self.btn_select_folder.setEnabled(True)

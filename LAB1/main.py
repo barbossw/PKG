@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QColorDialog, QMessageBox
 from PyQt5.QtGui import QColor
-from interface import Ui_ColorConverterUI
+from LAB2.interface import Ui_ColorConverterUI
 import functions as cc
 
 class ColorConverterApp(QWidget, Ui_ColorConverterUI):
