@@ -158,6 +158,114 @@ def parse_gif(file_path, file):
     except Exception:
         return {"format": "Битый", "compression": "-", "size": "-", "resolution": "-", "color_depth": "-"}
 
+def parse_tif(file_path, file):
+    try:
+        file.seek(0)
+        header = file.read(8)
+        if header[:2] == b'II':
+            endian = '<'
+        elif header[:2] == b'MM':
+            endian = '>'
+        else:
+            return {"format": "Битый", "compression": "-", "size": "-", "resolution": "-", "color_depth": "-"}
+
+        magic = struct.unpack(endian + 'H', header[2:4])[0]
+        if magic != 42:
+            return {"format": "Битый", "compression": "-", "size": "-", "resolution": "-", "color_depth": "-"}
+
+        ifd_offset = struct.unpack(endian + 'I', header[4:8])[0]
+        file.seek(ifd_offset)
+
+        num_entries = struct.unpack(endian + 'H', file.read(2))[0]
+
+        width = height = 0
+        x_res_off = y_res_off = 0
+        res_unit = 2
+        compression_val = 1
+        bits_per_sample = 8
+        samples_per_pixel = 1
+        bits_is_array = False
+        bits_offset = 0
+
+        for _ in range(num_entries):
+            entry = file.read(12)
+            if len(entry) < 12:
+                break
+            tag, field_type, count, value_offset = struct.unpack(endian + 'HHII', entry)
+
+            val_short = struct.unpack(endian + 'H', entry[8:10])[0]
+            val_long = value_offset
+
+            val = val_short if field_type == 3 else val_long
+
+            if tag == 256:
+                width = val
+            elif tag == 257:
+                height = val
+            elif tag == 258:
+                if count == 1:
+                    bits_per_sample = val
+                else:
+                    bits_is_array = True
+                    bits_offset = value_offset
+            elif tag == 259:
+                compression_val = val
+            elif tag == 277:
+                samples_per_pixel = val
+            elif tag == 282:
+                x_res_off = value_offset
+            elif tag == 283:
+                y_res_off = value_offset
+            elif tag == 296:
+                res_unit = val
+
+        if bits_is_array and bits_offset > 0:
+            current_pos = file.tell()
+            file.seek(bits_offset)
+            bits_per_sample = struct.unpack(endian + 'H', file.read(2))[0]
+            file.seek(current_pos)
+
+        color_depth = bits_per_sample * samples_per_pixel
+
+        dpi_x = dpi_y = 96
+        if x_res_off > 0:
+            file.seek(x_res_off)
+            num, den = struct.unpack(endian + 'II', file.read(8))
+            if den != 0:
+                dpi_x = int(num / den)
+        if y_res_off > 0:
+            file.seek(y_res_off)
+            num, den = struct.unpack(endian + 'II', file.read(8))
+            if den != 0:
+                dpi_y = int(num / den)
+
+        if res_unit == 3:
+            dpi_x = int(dpi_x * 2.54)
+            dpi_y = int(dpi_y * 2.54)
+
+        comp_str = "Без сжатия"
+        if compression_val == 5:
+            comp_str = "LZW"
+        elif compression_val in (6, 7):
+            comp_str = "JPEG"
+        elif compression_val == 32773:
+            comp_str = "PackBits"
+        elif compression_val in (2, 3, 4):
+            comp_str = "CCITT"
+        elif compression_val == 8:
+            comp_str = "Deflate"
+
+        return {
+            "format": "TIFF",
+            "compression": comp_str,
+            "size": f"{width}x{height}",
+            "resolution": f"{dpi_x}x{dpi_y}",
+            "color_depth": f"{color_depth} bit"
+        }
+
+    except Exception:
+        return {"format": "Битый", "compression": "-", "size": "-", "resolution": "-", "color_depth": "-"}
+
 def get_image_metadata(file_path):
     try:
         with open(file_path, "rb") as file:
@@ -175,6 +283,8 @@ def get_image_metadata(file_path):
                 return parse_bmp(file_path, file)
             elif signature.startswith(b'GIF87a') or signature.startswith(b'GIF89a'):
                 return parse_gif(file_path, file)
+            elif signature.startswith(b'II*\x00') or signature.startswith(b'MM\x00*'):
+                return parse_tif(file_path, file)
             else:
                 return {"format": "Не поддерживается", "compression": "-", "size": "-", "resolution": "-", "color_depth": "-"}
     except Exception:
