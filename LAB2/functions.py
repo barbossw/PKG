@@ -266,6 +266,36 @@ def parse_tif(file_path, file):
     except Exception:
         return {"format": "Битый", "compression": "-", "size": "-", "resolution": "-", "color_depth": "-"}
 
+def parse_pcx(file_path, file):
+    try:
+        file.seek(0)
+        header = file.read(66)
+        if len(header) < 66:
+            return {"format": "Битый", "compression": "-", "size": "-", "resolution": "-", "color_depth": "-"}
+            
+        manufacturer, version, encoding, bpp = struct.unpack("<BBBB", header[0:4])
+        xmin, ymin, xmax, ymax, hdpi, vdpi = struct.unpack("<HHHHHH", header[4:16])
+        nplanes = struct.unpack("<B", header[65:66])[0]
+        
+        width = xmax - xmin + 1
+        height = ymax - ymin + 1
+        
+        color_depth = bpp * nplanes
+        
+        comp_str = "RLE" if encoding == 1 else "Без сжатия"
+        
+        resolution = f"{hdpi}x{vdpi}" if hdpi > 0 and vdpi > 0 else "96x96"
+        
+        return {
+            "format": "PCX",
+            "compression": comp_str,
+            "size": f"{width}x{height}",
+            "resolution": resolution,
+            "color_depth": f"{color_depth} bit"
+        }
+    except Exception:
+        return {"format": "Битый", "compression": "-", "size": "-", "resolution": "-", "color_depth": "-"}
+
 def get_image_metadata(file_path):
     try:
         with open(file_path, "rb") as file:
@@ -285,6 +315,8 @@ def get_image_metadata(file_path):
                 return parse_gif(file_path, file)
             elif signature.startswith(b'II*\x00') or signature.startswith(b'MM\x00*'):
                 return parse_tif(file_path, file)
+            elif signature[0] == 10 and signature[2] == 1:
+                return parse_pcx(file_path, file)
             else:
                 return {"format": "Не поддерживается", "compression": "-", "size": "-", "resolution": "-", "color_depth": "-"}
     except Exception:
