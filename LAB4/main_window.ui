@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1180</width>
+    <height>760</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Лабораторная работа №4 — Базовые растровые алгоритмы</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="rootLayout">
+    <property name="leftMargin">
+     <number>8</number>
+    </property>
+    <property name="topMargin">
+     <number>8</number>
+    </property>
+    <property name="rightMargin">
+     <number>8</number>
+    </property>
+    <property name="bottomMargin">
+     <number>8</number>
+    </property>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tabCanvas">
+       <attribute name="title">
+        <string>Построение</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="canvasTabLayout">
+        <item>
+         <widget class="QWidget" name="controlPanel">
+          <property name="minimumSize">
+           <size>
+            <width>310</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>330</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <layout class="QVBoxLayout" name="controlLayout">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QGroupBox" name="groupAlgorithm">
+             <property name="title">
+              <string>Алгоритм</string>
+             </property>
+             <layout class="QVBoxLayout" name="algoLayout">
+              <item>
+               <widget class="QComboBox" name="comboAlgorithm">
+                <item>
+                 <property name="text">
+                  <string>Пошаговый алгоритм</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Алгоритм ЦДА</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Алгоритм Брезенхема (отрезок)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Алгоритм Брезенхема (окружность)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Алгоритм Кастла-Питвея (отрезок)</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>Сглаженная линия (алгоритм Ву)</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupParams">
+             <property name="title">
+              <string>Координаты</string>
+             </property>
+             <layout class="QFormLayout" name="paramsLayout">
+              <item row="0" column="0">
+               <widget class="QLabel" name="labelX1">
+                <property name="text">
+                 <string>X1:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QSpinBox" name="spinX1">
+                <property name="minimum">
+                 <number>-100</number>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="value">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="labelY1">
+                <property name="text">
+                 <string>Y1:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QSpinBox" name="spinY1">
+                <property name="minimum">
+                 <number>-100</number>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="value">
+                 <number>0</number>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="labelX2">
+                <property name="text">
+                 <string>X2:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="1">
+               <widget class="QSpinBox" name="spinX2">
+                <property name="minimum">
+                 <number>-100</number>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="value">
+                 <number>14</number>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
+               <widget class="QLabel" name="labelY2">
+                <property name="text">
+                 <string>Y2:</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="1">
+               <widget class="QSpinBox" name="spinY2">
+                <property name="minimum">
+                 <number>-100</number>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+                <property name="value">
+                 <number>6</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupActions">
+             <property name="title">
+              <string>Управление</string>
+             </property>
+             <layout class="QVBoxLayout" name="actionsLayout">
+              <item>
+               <widget class="QPushButton" name="btnDraw">
+                <property name="text">
+                 <string>Построить</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnClear">
+                <property name="text">
+                 <string>Очистить</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="chkAccumulate">
+                <property name="text">
+                 <string>Накладывать фигуры</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="chkShowIdeal">
+                <property name="text">
+                 <string>Показать идеальную линию</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupView">
+             <property name="title">
+              <string>Масштаб и сетка</string>
+             </property>
+             <layout class="QVBoxLayout" name="viewLayout">
+              <item>
+               <layout class="QHBoxLayout" name="zoomLayout">
+                <item>
+                 <widget class="QLabel" name="labelZoomTitle">
+                  <property name="text">
+                   <string>Масштаб:</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QSlider" name="sliderZoom">
+                  <property name="minimum">
+                   <number>6</number>
+                  </property>
+                  <property name="maximum">
+                   <number>64</number>
+                  </property>
+                  <property name="value">
+                   <number>24</number>
+                  </property>
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="labelZoomValue">
+                  <property name="minimumSize">
+                   <size>
+                    <width>40</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>24 px</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QPushButton" name="btnResetView">
+                <property name="text">
+                 <string>Сбросить вид к (0, 0)</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="chkShowGrid">
+                <property name="text">
+                 <string>Линии сетки</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="chkShowLabels">
+                <property name="text">
+                 <string>Подписи осей</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QCheckBox" name="chkShowAlphaValues">
+                <property name="text">
+                 <string>Значения Alpha в ячейках</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QGroupBox" name="groupInfo">
+             <property name="title">
+              <string>Информация</string>
+             </property>
+             <layout class="QVBoxLayout" name="infoLayout">
+              <item>
+               <widget class="QLabel" name="labelTime">
+                <property name="text">
+                 <string>Время: —</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="labelPixelCount">
+                <property name="text">
+                 <string>Закрашено пикселей: 0</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="labelCursorCoord">
+                <property name="text">
+                 <string>Курсор: (0, 0) | Alpha: 0.00</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLabel" name="labelGridNote">
+                <property name="text">
+                 <string>Привязка: целая координата (x, y) — центр квадрата [x-0.5; x+0.5] × [y-0.5; y+0.5]. ПКМ по сетке задаёт точки.</string>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="labelCanvas">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+            <horstretch>1</horstretch>
+            <verstretch>1</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>400</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::StyledPanel</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Sunken</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tabReport">
+       <attribute name="title">
+        <string>Вычисления и время</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="reportLayout">
+        <item>
+         <layout class="QHBoxLayout" name="traceHeaderLayout">
+          <item>
+           <widget class="QLabel" name="labelTraceTitle">
+            <property name="text">
+             <string>Пошаговые вычисления последнего построенного примитива:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="traceSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnExportTrace">
+            <property name="text">
+             <string>Сохранить протокол (.txt)</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableTrace">
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="timingHeaderLayout">
+          <item>
+           <widget class="QLabel" name="labelTimingTitle">
+            <property name="text">
+             <string>Сравнение времени работы алгоритмов на текущих координатах (усреднение по 1000 запусков):</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="timingSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="btnMeasureAll">
+            <property name="text">
+             <string>Замерить время всех алгоритмов</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QTableWidget" name="tableTiming">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>220</height>
+           </size>
+          </property>
+          <property name="editTriggers">
+           <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="alternatingRowColors">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

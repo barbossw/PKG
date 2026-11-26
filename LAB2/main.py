@@ -2,7 +2,7 @@ import sys
 import os
 from PyQt5.QtCore import QThread, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableWidgetItem, QHeaderView
-from interface import Ui_MainWindow
+from LAB3.interface import Ui_MainWindow
 from functions import get_image_metadata
 
 class ScannerThread(QThread):
